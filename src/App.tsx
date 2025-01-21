@@ -4,7 +4,7 @@ import Home from "./routes/home";
 import Profile from "./routes/profile";
 import Login from "./routes/login";
 import CreateAccount from "./routes/create-account";
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 import { useEffect, useState } from "react";
 import LoadingScreen from "./components/loading-screen";
@@ -47,10 +47,17 @@ color:white;
 font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 `;
+
+const Wrapper = styled.div`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+`;
 function App() {
   const [isLoading, setLoading] = useState(true);
   const init = async () => {
-    await auth.authStateReady(); //최초 인증 상태가 완료될 때 실행되는 Promise를 return/ 로그인 여부를 확인하는 동안 기다리겠따는 뜻..
+    await auth.authStateReady(); //최초 인증 상태가 완료될 때 실행되는 Promise를 return
+    //  로그인 여부를 확인하는 동안 기다리겠따는 뜻..
     setLoading(false);
   };
 
@@ -59,11 +66,10 @@ function App() {
   }, []);
 
   return (
-    <>
+    <Wrapper>
       <GlobalStyles />
       {isLoading ? <LoadingScreen /> : <RouterProvider router={router} />}
-      <RouterProvider router={router} />
-    </>
+    </Wrapper>
   );
 }
 
