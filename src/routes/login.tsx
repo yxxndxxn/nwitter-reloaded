@@ -12,6 +12,7 @@ import {
   Title,
   Wrapper,
 } from "../components/auth-components";
+import GoogleButton from "../components/google-btn";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -81,8 +82,9 @@ export default function Login() {
       {/*에러 메시지*/}
       {error !== "" ? <Error>{error}</Error> : null}
       <Switcher>
-        <Link to="/create-account">회원가입 &rarr;</Link>
+        <Link to="/create-account">회원가입 </Link>
       </Switcher>
+      <GoogleButton />
     </Wrapper>
   );
 }
