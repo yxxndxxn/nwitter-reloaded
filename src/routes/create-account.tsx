@@ -117,7 +117,7 @@ export default function CreateAccount() {
           onChange={onChange}
           name="password"
           value={password}
-          placeholder="비밀번호"
+          placeholder="비밀번호: 최소 6글자 이상 입력해주세요."
           type="password"
           required
         />
