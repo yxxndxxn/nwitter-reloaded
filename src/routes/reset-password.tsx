@@ -34,6 +34,7 @@ export default function ResetPassword() {
     if (loading || email === "") return;
     try {
       setLoading(true);
+      //todo: 유효한 이메일인지 확인 후 메일 발송해야 하는데,, 안돼.. why!!
       if (auth) {
         await sendPasswordResetEmail(auth, email);
         alert("이메일 전송이 완료되었습니다.");
