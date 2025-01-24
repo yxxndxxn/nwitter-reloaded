@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { auth } from "../firebase";
-import { Form, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Link } from "react-router-dom";
 import {
+  Form,
   Error,
   Input,
   Switcher,
