@@ -9,7 +9,7 @@ export default function ProtectedRoute({
 }: {
   children: React.ReactNode;
 }) {
-  const [user, setUser] = useState(auth.currentUser); //유저가 로그인 했는지 여부 알려줌(user 값 넘기거나 null)
+  const [user, setUser] = useState(auth.currentUser); //사용자 정보 얻기:currentUser (user 값 넘기거나 null)
   console.log("로그인 확인", user);
 
   useEffect(() => {

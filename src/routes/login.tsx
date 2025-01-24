@@ -82,7 +82,8 @@ export default function Login() {
       {/*에러 메시지*/}
       {error !== "" ? <Error>{error}</Error> : null}
       <Switcher>
-        <Link to="/create-account">회원가입 </Link>
+        <Link to="/reset-password">비밀번호 찾기</Link>
+        <Link to="/create-account">회원가입</Link>
       </Switcher>
       <GoogleButton />
     </Wrapper>

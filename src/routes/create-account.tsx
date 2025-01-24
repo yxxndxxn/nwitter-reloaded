@@ -99,13 +99,14 @@ export default function CreateAccount() {
           type="password"
           required
         />
-        <Input type="submit" value={loading ? "Loading" : "Create Account"} />
+        <Input type="submit" value={loading ? "Loading" : "회원가입"} />
       </Form>
 
       {/*에러 메시지*/}
       {error !== "" ? <Error>{error}</Error> : null}
       <Switcher>
-        <Link to="/login"> 로그인</Link>
+        <Link to="/reset-password">비밀번호 찾기</Link>
+        <Link to="/create-account">회원가입</Link>
       </Switcher>
       <GoogleButton />
     </Wrapper>
