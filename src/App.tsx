@@ -9,7 +9,7 @@ import reset from "styled-reset";
 import { useEffect, useState } from "react";
 import LoadingScreen from "./components/loading-screen";
 import { auth } from "./firebase";
-import ProtectedRoute from "./routes/protected-route";
+import ProtectedRoute from "./components/protected-route";
 
 const router = createBrowserRouter([
   {

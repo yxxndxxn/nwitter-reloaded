@@ -1,46 +1,17 @@
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
-import styled from "styled-components";
 import { auth } from "../firebase";
-import { useNavigate } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
+import { FirebaseError } from "firebase/app";
+import { Link } from "react-router-dom";
+import {
+  Error,
+  Input,
+  Switcher,
+  Title,
+  Wrapper,
+} from "../components/auth-components";
 
-const Wrapper = styled.div`
-  width: 420px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 50px 0px;
-`;
-
-const Title = styled.h1`
-  font-size: 42px;
-`;
-const Form = styled.form`
-  width: 100%;
-  margin-top: 50px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-`;
-const Input = styled.input`
-  width: 100%;
-  font-size: 16px;
-  padding: 10px 20px;
-  border-radius: 50px;
-  border: none;
-  &[type="submit"] {
-    cursor: pointer;
-    &:hover {
-      opacity: 0.8; //투명도로도 조정 가넝하구나..! 욜~
-    }
-  }
-`;
-
-const Error = styled.span`
-  font-weight: 600;
-  color: #ed4848;
-`;
 export default function CreateAccount() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); //계정 생성할 때 true
@@ -48,7 +19,8 @@ export default function CreateAccount() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  //성별, 나이, 학교, 흡연 여부, 연락처(카카오톡 ID...?)
+
+  //성별, 나이, 학교, 흡연 여부, 연락처(카카오톡 ID...? ㅇㅇ)
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { name, value },
@@ -66,8 +38,10 @@ export default function CreateAccount() {
 
   const onSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(""); //에러 메시지 초기화
+
     console.log(name, email, password);
-    if (name === "" || email === "" || password === "") return;
+    if (loading || name === "" || email === "" || password === "") return;
     try {
       setLoading(true);
       //가입한 유저 정보
@@ -84,18 +58,20 @@ export default function CreateAccount() {
       await updateProfile(credentials.user, {
         displayName: name,
       });
-      navigate("/"); //계정 생성, 사용자 프로필 업데이트 후 홈 이동
-
       //홈 페이지로 이동
+      navigate("/"); //계정 생성, 사용자 프로필 업데이트 후 홈 이동
     } catch (e) {
       //setError
+      if (e instanceof FirebaseError) {
+        setError(e.message);
+      }
     } finally {
       setLoading(false);
     }
   };
   return (
     <Wrapper>
-      <Title>join</Title>
+      <Title>회원가입</Title>
       <Form onSubmit={onSubmit}>
         <Input
           onChange={onChange}
@@ -123,7 +99,12 @@ export default function CreateAccount() {
         />
         <Input type="submit" value={loading ? "Loading" : "Create Account"} />
       </Form>
+
+      {/*에러 메시지*/}
       {error !== "" ? <Error>{error}</Error> : null}
+      <Switcher>
+        <Link to="/login"> 이미 계정이 있으신가요? &rarr;</Link>
+      </Switcher>
     </Wrapper>
   );
 }
