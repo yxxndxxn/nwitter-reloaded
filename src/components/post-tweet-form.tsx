@@ -1,7 +1,8 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import styled from "styled-components";
-import { db, auth } from "../firebase";
+import { db, auth, storage } from "../firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const Form = styled.form`
   display: flex;
@@ -64,6 +65,7 @@ export default function PostTweetForm() {
     setTweet(e.target.value);
   };
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //todo: 챌린지, 1MB 미만의 파일만 업로드할 수 있또록! 수정!!
     const { files } = e.target;
     if (files && files.length === 1) {
       setFile(files[0]);
@@ -77,12 +79,25 @@ export default function PostTweetForm() {
 
     try {
       setLoading(true);
-      await addDoc(collection(db, "tweets"), {
+      const doc = await addDoc(collection(db, "tweets"), {
         tweet,
         createdAt: Date.now(), //트윗이 생성된 시간 기록
         username: user.displayName || "Anonymous", //displayname 존재하지 않으면 익명으로 설정
         userId: user.uid,
       });
+      if (file) {
+        const locationRef = ref(
+          storage,
+          `tweets/${user.uid}-${user.displayName}/${doc.id}` //"tweets"파일 -> 이 경로에 저장
+        );
+        const result = await uploadBytes(locationRef, file);
+        const url = await getDownloadURL(result.ref);
+        updateDoc(doc, {
+          photo: url,
+        });
+      }
+      setTweet("");
+      setFile(null);
     } catch (e) {
       console.log(e);
     } finally {
@@ -93,6 +108,7 @@ export default function PostTweetForm() {
   return (
     <Form onSubmit={onSubmit}>
       <TextArea
+        required
         rows={5}
         maxLength={180}
         value={tweet}
