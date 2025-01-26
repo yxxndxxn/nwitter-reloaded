@@ -36,6 +36,7 @@ export const Input = styled.input`
 
 export const Error = styled.span`
   font-weight: 500;
+  font-size: 13px;
   color: #ed4848;
 `;
 
