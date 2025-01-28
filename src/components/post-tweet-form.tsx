@@ -1,5 +1,5 @@
 import { addDoc, collection, updateDoc } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { db, auth, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -69,7 +69,6 @@ export default function PostTweetForm() {
   };
 
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //todo: 코드 챌린지, 1MB 미만의 파일만 업로드할 수 있또록! 수정!!
     /*파일이 file인 input이 변경될 때 마다 파일의 배열을 받게 됨
     왜냐하면 어떤 input은 복수의 파일을 업로드 하기 때문! */
 
