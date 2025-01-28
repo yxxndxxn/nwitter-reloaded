@@ -104,8 +104,8 @@ export default function PostTweetForm() {
           storage,
           `tweets/${user.uid}/${doc.id}` //"tweets"파일 -> 이 경로에 저장
         );
-        const result = await uploadBytes(locationRef, file); //uploadBytes == 참조 url, 들어갈 file
-        const url = await getDownloadURL(result.ref); //getDownloadURL == file의 ref
+        const result = await uploadBytes(locationRef, file); //uploadBytes == 참조 url, 들어갈 file (업로드)
+        const url = await getDownloadURL(result.ref); //getDownloadURL == file의 ref (업로드 한 걸 다운 받아서 보여주는 겨)
         //코드로 만든 문서에 추가할 데이터를 넣어 업데이트 해줌
         //todo: edit 기능 넣기..(updateDoc 사용하기..!!)
         updateDoc(doc, {
