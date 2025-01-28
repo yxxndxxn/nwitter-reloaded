@@ -66,7 +66,7 @@ export default function Profile() {
   return (
     <Wrapper>
       <AvatarUpload htmlFor="avatar">
-        {Boolean(avatar) ? (
+        {avatar ? (
           <AvatarImg src={avatar} />
         ) : (
           <svg
