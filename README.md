@@ -4,6 +4,12 @@
 `createUserWithEmailAndPassword`: 계정 생성(email, password) <br/>
 `updateProfile`: 사용자 이름 설정
 
+**[timeline 컴포넌트]**<br/>
+Order, Limit (limit)
+기본적으로 쿼리는 쿼리를 만족하는 모든 document를 document ID별로 오름차순으로 검색합니다.
+orderBy()를 사용하여 데이터의 정렬 순서를 지정할 수 있으며, limit()를 사용하여 검색되는 document 수를 제한할 수 있습니다. limit()을 지정하는 경우 값은 0보다 크거나 같아야 합니다.
+https://firebase.google.com/docs/firestore/query-data/order-limit-data#order_and_limit_data
+
 `onSnapshot`은 특정 문서나 컬렉션, 쿼리 이벤트를 감지하여 realtime으로 이벤트콜백 함수를 실행해줄 수있다.
 이를통해 db에 들어온 쿼리를 새로고침없이 화면에 반영할 수있다.
 
