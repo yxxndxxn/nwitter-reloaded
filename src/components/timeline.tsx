@@ -1,10 +1,12 @@
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { db } from "../firebase";
+import Tweet from "./tweet";
 
 export interface ITweet {
-  photo: string;
+  id: string;
+  photo?: string;
   tweet: string;
   userId: string;
   username: string;
@@ -22,8 +24,30 @@ export default function Timeline() {
     );
     //쿼리의 snapshot을 받아서, 쿼리에서 반환된 각 문서 내부의 데이터를 출력
     const snapshot = await getDocs(tweetsQuery);
-    snapshot.docs.forEach((doc) => console.log(doc.data())); //forEach로 각 문서에 접근하고 문서 데이터 출력
+    //map함수를 사용하여 트윗 배열 안에 모든 문서를 저장
+    const tweets = snapshot.docs.map((doc) => {
+      const { tweet, createdAt, userId, username, photo } = doc.data(); //ITweet을 만족하는 모든 데이터 추출
+      //추출한 데이터를 객체로 반환
+      return {
+        tweet,
+        createdAt,
+        userId,
+        username,
+        photo,
+        id: doc.id,
+      };
+    });
+    setTweet(tweets); //추출한 트윗들을 상태에 저장
   };
 
-  return <Wrapper>{JSON.stringify(tweets)}</Wrapper>;
+  useEffect(() => {
+    fetchTweets();
+  }, []);
+  return (
+    <Wrapper>
+      {tweets.map((tweet) => (
+        <Tweet key={tweet.id} {...tweet} />
+      ))}
+    </Wrapper>
+  );
 }
