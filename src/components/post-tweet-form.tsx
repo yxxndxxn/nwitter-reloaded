@@ -102,7 +102,7 @@ export default function PostTweetForm() {
         const locationRef = ref(
           // ref == firebasestore와 연결된 변수, url
           storage,
-          `tweets/${user.uid}-${user.displayName}/${doc.id}` //"tweets"파일 -> 이 경로에 저장
+          `tweets/${user.uid}/${doc.id}` //"tweets"파일 -> 이 경로에 저장
         );
         const result = await uploadBytes(locationRef, file); //uploadBytes == 참조 url, 들어갈 file
         const url = await getDownloadURL(result.ref); //getDownloadURL == file의 ref

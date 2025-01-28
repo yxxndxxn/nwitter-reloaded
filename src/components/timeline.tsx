@@ -36,6 +36,7 @@ export default function Timeline() {
     const fetchTweets = async () => {
       const tweetsQuery = query(
         collection(db, "tweets"),
+        //orderBy: 데이터의 정렬 순서 지정(기본적으론 오름차순임)
         orderBy("createdAt", "desc"), //createdAt을 기준으로 desc(내림차순!)
         //todo: 페이지네이션 설정
         limit(25) //데이터 25개만 불러오도록 설정
