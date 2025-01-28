@@ -2,8 +2,15 @@ import styled from "styled-components";
 import { ITweet } from "./timeline";
 import { auth, db, storage } from "../firebase";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { deleteObject, ref } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 import { useState } from "react";
+import { FILE_MAX_SIZE } from "../constants/constants";
+import { Error } from "./auth-components";
 
 const Wrapper = styled.div`
   display: grid;
@@ -11,6 +18,7 @@ const Wrapper = styled.div`
   padding: 20px;
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 15px;
+  margin-bottom: 15px;
 `;
 const Column = styled.div``;
 
@@ -54,7 +62,7 @@ const EditButton = styled.button`
   cursor: pointer;
 `;
 
-const EditFile = styled.button`
+const EditFileLabel = styled.label`
   background-color: lightgray;
   color: black;
   border: 0;
@@ -67,6 +75,9 @@ const EditFile = styled.button`
   border-radius: 5px;
   cursor: pointer;
 `;
+const EditFile = styled.input`
+  display: none;
+`;
 
 const ColumnPhoto = styled.div`
   display: flex;
@@ -76,7 +87,9 @@ const ColumnPhoto = styled.div`
 `;
 
 export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
-  const [isEditing, setIsEditing] = useState(false); //수정 여부
+  const [error, setError] = useState("");
+  const [file, setFile] = useState<File | null>(null);
+  const [isEditing, setIsEditing] = useState(false); //tweet 수정 여부
   const [editValue, setEditValue] = useState(tweet); //수정한 tweet
   const user = auth.currentUser;
 
@@ -111,6 +124,28 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
     }
   };
 
+  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target;
+    if (files && files.length === 1) {
+      if (files[0].size < FILE_MAX_SIZE) {
+        setFile(files[0]);
+        setError(""); //에러 메시지 초기화
+
+        if (user && photo) {
+          const photoRef = ref(storage, `tweets/${user?.uid}/${id}`);
+          const result = await uploadBytes(photoRef, files[0]);
+          const url = await getDownloadURL(result.ref);
+          await updateDoc(doc(db, "tweets", id), {
+            photo: url,
+          });
+        }
+      } else {
+        setError("1MB 미만의 이미지만 업로드 할 수 있습니다.");
+        setFile(null);
+      }
+    }
+  };
+
   return (
     //todo: 코드 챌린지- edit 버튼 만들기(사진 삭제&변경도 가능하면 굳굳)
     <Wrapper>
@@ -140,9 +175,16 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
       {photo ? (
         <ColumnPhoto>
           <Photo src={photo} />
-          <EditFile>photo edit 📷</EditFile>
+          <EditFileLabel htmlFor="editFile">사진 수정 📷 </EditFileLabel>
+          <EditFile
+            type="file"
+            onChange={onFileChange}
+            id="editFile"
+            accept="image/*"
+          />
         </ColumnPhoto>
       ) : null}
+      {error ? <Error>{error}</Error> : ""}
     </Wrapper>
   );
 }
