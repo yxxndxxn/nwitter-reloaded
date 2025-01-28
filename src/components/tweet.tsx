@@ -205,7 +205,9 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
         ) : (
           <>
             <Payload>{tweet}</Payload>
-            <EditButton onClick={() => setIsEditing(true)}>✏️</EditButton>
+            {user?.uid === userId ? (
+              <EditButton onClick={() => setIsEditing(true)}>✏️</EditButton>
+            ) : null}
           </>
         )}
 
@@ -217,13 +219,17 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
       {photo ? (
         <ColumnPhoto>
           <Photo src={photo} />
-          <EditFileLabel htmlFor="editFile">사진 수정 📷 </EditFileLabel>
-          <EditFile
-            type="file"
-            onChange={onFileChange}
-            id="editFile"
-            accept="image/*"
-          />
+          {user?.uid === userId ? (
+            <>
+              <EditFileLabel htmlFor="editFile">사진 수정 📷 </EditFileLabel>
+              <EditFile
+                type="file"
+                onChange={onFileChange}
+                id="editFile"
+                accept="image/*"
+              />
+            </>
+          ) : null}
         </ColumnPhoto>
       ) : null}
       {error ? <Error>{error}</Error> : ""}
