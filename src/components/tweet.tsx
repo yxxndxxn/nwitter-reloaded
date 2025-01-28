@@ -47,6 +47,11 @@ const DeleteButton = styled.button`
   text-transform: uppercase;
   border-radius: 5px;
   cursor: pointer;
+  margin-left: 10px;
+
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 const EditButton = styled.button`
@@ -60,6 +65,39 @@ const EditButton = styled.button`
   text-transform: uppercase;
   border-radius: 5px;
   cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+const EditInput = styled.input`
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 2px solid #4a4a4a;
+  background-color: #2c2c2c;
+  color: white;
+  font-size: 16px;
+  margin: 8px 0;
+  transition: border-color 0.2s;
+`;
+
+const EditCompleteButton = styled.button`
+  background-color: #3a3a3a;
+  color: white;
+  font-weight: 600;
+  border: none;
+  font-size: 12px;
+  padding: 6px 12px;
+  text-transform: uppercase;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #4a4a4a;
+  }
 `;
 
 const EditFileLabel = styled.label`
@@ -74,6 +112,10 @@ const EditFileLabel = styled.label`
   text-transform: uppercase;
   border-radius: 5px;
   cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 const EditFile = styled.input`
   display: none;
@@ -154,11 +196,11 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
 
         {isEditing ? (
           <>
-            <input
+            <EditInput
               onChange={(e) => setEditValue(e.target.value)}
               value={editValue}
             />
-            <button onClick={onEdit}>수정 완료</button>
+            <EditCompleteButton onClick={onEdit}>수정 완료</EditCompleteButton>
           </>
         ) : (
           <>
@@ -169,7 +211,7 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
 
         {/*현재 로그인한 유저와 글 작성자와 같다면 삭제 버튼 */}
         {user?.uid === userId ? (
-          <DeleteButton onClick={onDelete}>Delete 🗑️</DeleteButton>
+          <DeleteButton onClick={onDelete}>🗑️</DeleteButton>
         ) : null}
       </Column>
       {photo ? (
