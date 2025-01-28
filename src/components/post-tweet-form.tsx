@@ -107,6 +107,7 @@ export default function PostTweetForm() {
         const result = await uploadBytes(locationRef, file); //uploadBytes == 참조 url, 들어갈 file
         const url = await getDownloadURL(result.ref); //getDownloadURL == file의 ref
         //코드로 만든 문서에 추가할 데이터를 넣어 업데이트 해줌
+        //todo: edit 기능 넣기..(updateDoc 사용하기..!!)
         updateDoc(doc, {
           photo: url,
         });

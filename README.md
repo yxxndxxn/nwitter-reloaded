@@ -1,19 +1,23 @@
 ## vite<br/>
+
 : go로 작성된 esebuilder를 사용해서 Webpack5보다 최대 100배 빠른 빌드 속도를 냄
 
 `createUserWithEmailAndPassword`: 계정 생성(email, password) <br/>
 `updateProfile`: 사용자 이름 설정
 
----- 
-## [timeline 컴포넌트]
+---
+
+## [Timeline 컴포넌트]
+
 ### `query`
+
 기본적으로 쿼리는 쿼리를 만족하는 모든 document를 document ID별로 *오름차순*으로 검색합니다. <br/> <br/>
 `orderBy()`를 사용하여 *데이터의 정렬 순서를 지정*할 수 있음<br/>
 `limit()`를 사용하여 검색되는 *document 수를 제한*할 수 있습니다.(값은 0보다 크거나 같아야 함)
 https://firebase.google.com/docs/firestore/query-data/order-limit-data#order_and_limit_data
 
-
 ### `onSnapshot`
+
 `onSnapshot`은 특정 문서나 컬렉션, 쿼리 이벤트를 감지하여 realtime으로 이벤트콜백 함수를 실행해줄 수있다. 이를통해 db에 들어온 쿼리를 새로고침없이 화면에 반영할 수있다.
 
 `onSnapshot`을 사용할 때는 비용을 지불해야한다.
@@ -24,3 +28,24 @@ https://firebase.google.com/docs/firestore/query-data/order-limit-data#order_and
 
 const 변수선언 및 할당을 해주고, useEffect의 return으로 해당 함수를 실행시켜주면된다.
 https://react.dev/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development
+
+## [Tweet 컴포넌트]
+
+### `삭제`
+
+firebase에서 트윗을 삭제하려면 doc함수를 사용하여 db에서 해당 tweet을 찾고, deleteDoc함수에 입력해주어야 한다 (doc함수의 인자: db, document 이름, id)<br/>
+트윗에 사진이 포함되어 있다면, 사진도 별도로 삭제하는 작업이 필요하다.
+-> 이때 쉽게 삭제할 수 있도록 사진의 저장 경로를 수정(유저ID/docID) <br/>
+
+Document 삭제: `deleteDoc`
+https://firebase.google.com/docs/firestore/manage-data/delete-data#delete_documents <br/>
+
+파일 삭제: `deleteObject`
+파일을 삭제하려면 먼저 해당 파일에 대한 reference를 만듭니다. 그런 다음 해당 reference에 대해 delete() 메서드를 호출합니다.
+
+````if(photo){
+const photoRef =ref(storage,`tweets/${userId}/${docId}`);
+await deleteObject(photoRef);
+}```
+https://firebase.google.com/docs/storage/web/delete-files#delete_a_file
+````
