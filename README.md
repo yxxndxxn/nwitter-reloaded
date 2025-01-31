@@ -49,3 +49,15 @@ await deleteObject(photoRef);
 }```
 https://firebase.google.com/docs/storage/web/delete-files#delete_a_file
 ````
+
+## [Profile 컴포넌트]
+#### 사용자의 tweets만 가져오는 query 만들기
+그냥 데이터를 가져오는 것 이외에 where이나 orderBy를 사용해서 다른 순서로 가져오거나, 필터링해서 가져오고 싶으면 Firebase와 Firestore에 더욱 자세히 알려줘야 함(미리 해당 정보들을 주어야 함)!
+
+firebase가 제공하는 `query`의 `where`옵션을 사용하여 읽어올 데이터를 필터링 할 수 있음
+`where`에는 3개의 파라미터가 필요함
+- doc의 field
+- 연산자
+- 내가 원하는 조건
+```where("userId", "==", user?.uid),```
+(쿼리를 날린 후 브라우저의 콘솔에서 설정창링크를 확인할 수 있음)
