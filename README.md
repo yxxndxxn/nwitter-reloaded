@@ -61,3 +61,19 @@ firebase가 제공하는 `query`의 `where`옵션을 사용하여 읽어올 데�
 - 내가 원하는 조건
 ```where("userId", "==", user?.uid),```
 (쿼리를 날린 후 브라우저의 콘솔에서 설정창링크를 확인할 수 있음)
+
+
+## 배포
+#### firebase의 Hosting 사용
+실제로 bundle이 어디에 빌드되는지 확인해보았을 때(`npm run build`), Vite 프로젝트에서 나의 product 모든 것을 압축하여 저장하는 폴더는 `dist`임을 알 수 있었음
+(`npm run build`를 실행하면 vite가 dist 폴더를 만들어줌)
+👉 Firebase에서 배포할 폴더는 `dist`인 것! 
+👉 Firebase야~ dist 폴더를 cloud에 업로드 해죠잉~
+
+재배포 시 npm run deploy를 터미널에 입력하면 됨!
+
+#### package.json 수정(`deploy`, `predeploy`)
+- ```"deploy": "firebase deploy"```
+- ```"predeploy": "npm run build"```
+👉 deploy를 실행하면 `npm run build`를 통해 `tsc`와 `vite build`가 실행
+👉 그 후에 Firebase deploy가 실행되어 `dist`폴더를 Firebase cloud에 배포하게 됨
