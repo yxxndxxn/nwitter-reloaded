@@ -1,6 +1,6 @@
 ## vite<br/>
 
-: go로 작성된 esebuilder를 사용해서 Webpack5보다 최대 100배 빠른 빌드 속도를 냄
+: go로 작성된 esebuilder를 사용해서 Webpack5보다 최대 100배 빠른 빌드 속도를 낸다
 
 `createUserWithEmailAndPassword`: 계정 생성(email, password) <br/>
 `updateProfile`: 사용자 이름 설정
@@ -13,12 +13,12 @@
 
 기본적으로 쿼리는 쿼리를 만족하는 모든 document를 document ID별로 *오름차순*으로 검색합니다. <br/> <br/>
 `orderBy()`를 사용하여 *데이터의 정렬 순서를 지정*할 수 있음<br/>
-`limit()`를 사용하여 검색되는 *document 수를 제한*할 수 있습니다.(값은 0보다 크거나 같아야 함)
+`limit()`를 사용하여 검색되는 *document 수를 제한*할 수 있음(값은 0보다 크거나 같아야 함)
 https://firebase.google.com/docs/firestore/query-data/order-limit-data#order_and_limit_data
 
 ### `onSnapshot`
 
-`onSnapshot`은 특정 문서나 컬렉션, 쿼리 이벤트를 감지하여 realtime으로 이벤트콜백 함수를 실행해줄 수있다. 이를통해 db에 들어온 쿼리를 새로고침없이 화면에 반영할 수있다.
+`onSnapshot`은 특정 문서나 컬렉션, 쿼리 이벤트를 감지하여 realtime으로 이벤트콜백 함수를 실행해줄 수있다. 이를통해 db에 들어온 쿼리를 새로고침없이 화면에 반영할 수 있다.
 
 `onSnapshot`을 사용할 때는 비용을 지불해야한다.
 유저가 다른 화면을 보고있으면 작동하지 않게해주는것이 좋다.
@@ -77,3 +77,20 @@ firebase가 제공하는 `query`의 `where`옵션을 사용하여 읽어올 데�
 - ```"predeploy": "npm run build"```
 👉 deploy를 실행하면 `npm run build`를 통해 `tsc`와 `vite build`가 실행
 👉 그 후에 Firebase deploy가 실행되어 `dist`폴더를 Firebase cloud에 배포하게 됨
+
+#### Firebase Security Rules
+: Firebase 데이터베이스(Realtime Database나 Firestore)에 대한 액세스를 제어하는 역할
+👉 이를 통해 데이터의 읽기 및 쓰기 권한을 정의하고, 사용자 인증 상태와 데이터 구조에 따라 특정 조건을 설정할 수 있습니다.
+
+[주요 역할]
+- **접근 제어**: 특정 사용자나 사용자 그룹에 대해 데이터에 대한 읽기/쓰기 권한 설정
+- **데이터 유효성 검사**: 데이터가 데이터베이스에 저장되기 전에 유효성을 검사하여 잘못된 형식이나 불필요한 데이터가 들어가지 않도록 함
+- **보안 강화**: 민감한 데이터를 보호하고, 외부 공격으로부터 데이터베이스를 안전하게 지킴
+- **개발 및 운영 관리**: 개발 단계에서 적절한 권한을 설정하여 사용자 경험을 관리하고, 운영 단계에서 데이터 접근을 제어
+
+Cloud Firestore 보안 규칙
+https://firebase.google.com/docs/firestore/security/get-started
+
+Cloud Storage 보안 규칙
+https://firebase.google.com/docs/storage/security
+
